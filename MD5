@@ -1,0 +1,9 @@
+bc4c22eb49b3e902d8951e1941c8d491 *DESCRIPTION
+8111ae6566786cb04fb28f43f9888cd9 *NAMESPACE
+9c28053787c3fc6f314aefb6f9efad71 *R/stepmix.R
+780156497af392d6d3e9a191426bffc2 *man/fit.Rd
+117189d5e0b3cef9a8077ec5a0fe24fd *man/install.stepmix.Rd
+c4d86e0d8baa128a3602694c022f7041 *man/mixed_descriptor.Rd
+e0440ad96219d8d5e863b6246e38e21d *man/predict.Rd
+826a9077fa40188fac438f9ecd65aeba *man/savefit.Rd
+4f800487dc43a00bd8547e9e2464eef6 *man/stepmix.Rd
