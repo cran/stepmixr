@@ -1,5 +1,7 @@
 \name{fit}
 \alias{fit}
+\alias{print.stepmix.stepmix.StepMix}
+\alias{identify_coef}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Fit a mixture using the stepmix python package. 
@@ -10,17 +12,26 @@ Fit a mixture using the stepmix python package.
 }
 \usage{
 fit(smx, X = NULL, Y = NULL)
+\method{print}{stepmix.stepmix.StepMix}(x, ...)
+identify_coef(coef)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{smx}{An object created with the stepmix function.}
   \item{X}{The X matrix or data.frame for the measurement part of the model}
-  \item{Y}{The Y matrix or data.frame for the structural part of the model}   
+  \item{Y}{The Y matrix or data.frame for the structural part of the
+    model}   
+  \item{x}{An object fitted with the fit method}
+  \item{coef}{Matrix of coefficients to be modified}
+  \item{...}{unused but included to be inline with requirement of generic function}
 }
 \details{
   This methods returns a pointer to a python object of type StepMix. It can be
   used within reticulate but not within R. To save this type of object,
-  you need to use the savefit function. 
+  you need to use the savefit function. The print method, uses the same
+  print methods used when verbose = TRUE, it takes the last X and Y
+  arguments used with the fit method. identify_coef find a reference
+  configuration of the coefficients. 
 }
 \value{
    A pointer to a python object of type StepMix.
@@ -42,9 +53,12 @@ Bakk, Z. and Kuha, J. Two-step estimation of models between latent
 classes and external variables. Psychometrika, 83(4):871-892, 2018 
 }
 \author{
-  Charles-Édouard Giguère (stepmixr)
-  Sacha Morin (stepmix)
-  Robin Legault (stepmix)
+  Éric Lacourse, 
+  Roxane de la Sablonnière,
+  Charles-Édouard Giguère,
+  Sacha Morin,
+  Robin Legault,
+  Zsusza Bakk
 }
 
 %\seealso{

@@ -1,6 +1,12 @@
 ### =======================
 ### Interface to stepmix.
-### Charles-Édouard Giguère
+###
+### Éric Lacourse
+### Roxane de la Sablonnière
+### Charles-Édouard Giguère (Maintainer)
+### Sacha Morin
+### Robin Legault
+### Zsusza Bakk
 ### =======================
 
 ### Function stepmix. Kept as an R object. The python package is
@@ -61,7 +67,7 @@ mixed_descriptor <- function(data, continuous = NULL,
   if(!is.null(binary)){
     desc_mixed[["binary"]] <- list(
       model = "binary",
-      n_columns = as.integer(length(continuous)))
+      n_columns = as.integer(length(binary)))
   }
   if(!is.null(categorical)){
     desc_mixed[["categorical"]] <- list(
@@ -117,6 +123,8 @@ fit <- function(smx, X = NULL, Y = NULL){
                      "Install it using pip install stepmix.",collapse = ""))
     model <- do.call(sm$StepMix, smx)
     fit <- model$fit(as.data.frame(X))
+    attr(fit, "X") <- X
+    attr(fit, "Y") <- NULL
     return(fit)
   }
   else{
@@ -128,6 +136,8 @@ fit <- function(smx, X = NULL, Y = NULL){
                  "Install it using pip install stepmix.",collapse = ""))
            model <- do.call(sm$StepMix, smx)
            fit <- model$fit(as.data.frame(X), as.data.frame(Y))
+           attr(fit, "X") <- X
+           attr(fit, "Y") <- Y
            return(fit)
   }
 }
@@ -152,6 +162,31 @@ predict.stepmix.stepmix.StepMix <- function(object, X = NULL, Y = NULL, ...){
   }
   return(pr)
 }
+
+
+### Print methods that replicate the ouput used when using verbose methods.
+print.stepmix.stepmix.StepMix <- function(x, ...){
+    ##
+    sm <- try(reticulate::import("stepmix"), silent = TRUE)
+    if(inherits(sm, "try-error"))
+        stop(paste("Unable to find stepmix library in your python repos\n",
+                   "Install it using pip install stepmix.",collapse = ""))
+    if(is.null(attr(x, "Y"))){
+        sm$utils$print_report(x,attr(x, "X"))
+    }
+    else{
+        sm$utils$print_report(x, attr(x, "X"), attr(x, "Y"))
+    }
+}
+
+
+### Find a reference configuration of the coefficients.
+# Set a reference class with null coefficients for identifiability
+identify_coef <- function(coef){
+  second_coef = order(coef[,2])[2]
+  coef - matrix(coef[second_coef,], nrow = dim(coef)[1], ncol = dim(coef)[2], byrow = TRUE)
+}
+
 
 ### Save a StepMix fit using pickle via reticulate.
 savefit <- function(fitx, f){
@@ -244,4 +279,6 @@ pystepmix <- NULL
 .onLoad <- function(libname, pkgname) {
   pystepmix <<- load_pystepmix
 }
+
+
 
